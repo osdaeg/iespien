@@ -1,0 +1,21 @@
+services:
+  iespien:
+    build: .
+    container_name: iespien
+    restart: "no"
+    networks:
+      - TuRed
+    volumes:
+      - /ruta/donde/estan/tus/webserver/sites:/var/www/html
+      - /ruta/a/tu/iespien/config.yaml:/app/config.yaml
+      - /ruta/a/tu/iespien/icons:/app/icons
+      - /ruta/a/tu/iespien/cache:/app/cache
+    environment:
+      - IESPIEN_CONFIG=/app/config.yaml
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Argentina/Buenos_Aires
+
+networks:
+  TuRed:
+    external: true

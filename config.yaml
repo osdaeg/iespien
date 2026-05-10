@@ -1,0 +1,108 @@
+oracle:
+  url: "http://oracle:8000/query"
+  source: "iespien"
+
+dashboard:
+  output_path: "/var/www/html/iespien/index.html"
+  icons_path: "/var/www/html/iespien/icons"
+  title: "IESPIEN · Agenda Deportiva"
+  timezone: "America/Argentina/Buenos_Aires"
+
+deportes:
+  - nombre: "Rugby"
+    icono: "rugby.png"
+    activo: true
+    prompt: >
+      Dame el calendario completo de rugby para hoy y los próximos 2 días ({fechas}).
+      Incluí los siguientes torneos internacionales y locales:
+      Six Nations, Super Rugby, Super Rugby Américas, Rugby Championship, Torneo de la UAR y de la URBA,
+      Top 14, partidos de Argentina (Los Pumas, Pumas 7s, selecciones juveniles).
+      Para cada partido indicá competición, equipos (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora en Argentina (ART UTC-3, formato HH:MM),
+      estadio/escenario, ciudad/país, y canales de TV en Argentina (ESPN, Disney+, etc.).
+      Si no hay dato confirmado para algún campo, usá string vacío.
+
+  - nombre: "Fútbol"
+    icono: "futbol.png"
+    activo: true
+    prompt: >
+      Dame el calendario completo de fútbol para hoy y los próximos 2 días ({fechas}).
+      Incluí: Liga Profesional Argentina, Copa Argentina, Copa Libertadores, Copa Sudamericana,
+      Champions League, Premier League, La Liga, Serie A, Bundesliga, Ligue 1,
+      y partidos de la Selección Argentina.
+      Para cada partido indicá competición, equipos (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora en Argentina (ART UTC-3, formato HH:MM),
+      estadio/escenario, ciudad/país, y canales de TV en Argentina (ESPN, Disney+, TyC Sports, etc.).
+      Si no hay dato confirmado para algún campo, usá string vacío.
+
+  - nombre: "Tenis"
+    icono: "tenis.png"
+    activo: true
+    prompt: >
+      Dame el calendario de tenis para hoy y los próximos 2 días ({fechas}).
+      Incluí torneos ATP, WTA y Grand Slams activos.
+      Enfocate en partidos con participación argentina o partidos de cuartos de final en adelante.
+      Para cada partido indicá competición/torneo, jugadores (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora estimada en Argentina (ART UTC-3, formato HH:MM),
+      cancha/escenario, ciudad, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.
+      
+  - nombre: "UFC"
+    icono: "karate.png"
+    activo: true
+    prompt: >
+      Dame el calendario de peleas de UFC para hoy y los próximos 2 días ({fechas}).
+      Enfocate en peleas con participación argentina o peleas por el título.
+      Para cada pelea indicá competición/torneo, combatientes (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora estimada en Argentina (ART UTC-3, formato HH:MM),
+      cancha/escenario, ciudad, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.    
+      
+  - nombre: "Box"
+    icono: "box.png"
+    activo: true
+    prompt: >
+      Dame el calendario de peleas de Boxeo para hoy y los próximos 2 días ({fechas}).
+      Enfocate en  peleas por el título del mundo o peleas internacionales con participación argentina.
+      Para cada pelea indicá competición/torneo, combatientes (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora estimada en Argentina (ART UTC-3, formato HH:MM),
+      cancha/escenario, ciudad, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.    
+      
+
+  - nombre: "Básquet"
+    icono: "basquet.png"
+    activo: true
+    prompt: >
+      Dame el calendario de básquet para hoy y los próximos 2 días ({fechas}).
+      Incluí NBA, Liga Nacional Argentina, EuroLeague, y partidos de selecciones.
+      Para cada partido indicá competición, equipos (local vs visitante como string),
+      fecha (formato DD/MM/YYYY), hora en Argentina (ART UTC-3, formato HH:MM),
+      estadio/escenario, ciudad, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.
+
+  - nombre: "Fórmula 1"
+    icono: "f1.png"
+    activo: true
+    prompt: >
+      Dame el calendario de Fórmula 1 para hoy y los próximos 2 días ({fechas}).
+      Incluí todas las sesiones del fin de semana: práctica libre, clasificación, sprint y carrera.
+      Para cada sesión indicá como competición el nombre del Gran Premio,
+      como contrincantes el nombre de la sesión (ej. "Clasificación", "Carrera"),
+      fecha (formato DD/MM/YYYY), hora en Argentina (ART UTC-3, formato HH:MM),
+      circuito como escenario, ciudad/país, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.
+
+  - nombre: "Automovilismo en Argentina"
+    icono: "tc.png"
+    activo: true
+    prompt: >
+      Dame el calendario de Automovilismo en Argentina para hoy y los próximos 2 días ({fechas}).
+      Incluí las siguientes categorias: Turismo Carretera, TC Pista, TC Pickup, Turismo Nacional,
+      TC 2000, Turismo Carretera 2000, Formula 3 Metropolitana.
+      Incluí todas las sesiones del fin de semana: entrenamientos, clasificación, series y carrera.
+      Para cada sesión indicá como competición el nombre del Gran Premio,
+      como contrincantes el nombre de la categoría y sesión (ej. "Clasificación", "Carrera"),
+      fecha (formato DD/MM/YYYY), hora en Argentina (ART UTC-3, formato HH:MM),
+      circuito como escenario, ciudad/país, y canales de TV en Argentina.
+      Si no hay dato confirmado para algún campo, usá string vacío.

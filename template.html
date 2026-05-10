@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ titulo }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090b;
+    --surface: #111113;
+    --border: #1c1c20;
+    --border-light: #2a2a30;
+    --accent: #e8ff47;
+    --accent-dim: #8a9920;
+    --text: #f0f0f2;
+    --muted: #52525a;
+    --muted-light: #78788a;
+    --card-bg: #0e0e10;
+    --card-hover: #141418;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 60% 30% at 20% 0%, #1a1a08 0%, transparent 60%),
+      radial-gradient(ellipse 40% 20% at 80% 100%, #0a0a1a 0%, transparent 60%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 2rem 2.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: 'IESPIEN';
+    position: absolute;
+    right: -0.05em;
+    top: -0.1em;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9rem;
+    font-weight: 900;
+    color: #0e0e10;
+    opacity: 0.35;
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+
+  .header-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .header-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .meta-stat {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+  }
+
+  .meta-stat span {
+    color: var(--accent);
+    font-size: 1.1rem;
+    display: block;
+    line-height: 1;
+  }
+
+  .generado-tag {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 0;
+    background: #0c0c0e;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .ticker::before,
+  .ticker::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 3rem;
+    z-index: 2;
+  }
+  .ticker::before { left: 0; background: linear-gradient(90deg, #0c0c0e, transparent); }
+  .ticker::after  { right: 0; background: linear-gradient(-90deg, #0c0c0e, transparent); }
+
+  .ticker-track {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker-scroll 60s linear infinite;
+  }
+
+  .ticker-track:hover { animation-play-state: paused; }
+
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    white-space: nowrap;
+  }
+
+  .ticker-item .t-hora {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .ticker-item .t-teams {
+    color: var(--text);
+  }
+
+  .ticker-item .t-comp {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.7rem;
+  }
+
+  .ticker-sep {
+    color: var(--accent);
+    opacity: 0.4;
+    font-size: 0.6rem;
+    padding: 0 0.25rem;
+  }
+
+  /* ── SPORT TABS ── */
+  .sport-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0 2.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sport-nav::-webkit-scrollbar { display: none; }
+
+  .sport-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    transition: all 0.2s;
+    white-space: nowrap;
+    margin-bottom: -1px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .sport-tab:hover { color: var(--text); }
+  .sport-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .sport-tab img {
+    width: 18px; height: 18px;
+    object-fit: contain;
+    opacity: 0.7;
+    filter: grayscale(1) brightness(1.5);
+  }
+  .sport-tab.active img { opacity: 1; filter: none; }
+
+  .sport-count {
+    background: var(--border-light);
+    color: var(--muted-light);
+    font-size: 0.6rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 10px;
+  }
+  .sport-tab.active .sport-count { background: #2a2e00; color: var(--accent); }
+
+  /* ── MAIN CONTENT ── */
+  main { padding: 0; }
+
+  .sport-panel {
+    display: none;
+    padding: 2rem 2.5rem;
+    max-width: 1200px;
+  }
+  .sport-panel.active { display: block; }
+
+  /* ── DATE SECTION ── */
+  .date-section {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.4s ease forwards;
+  }
+  .date-section:nth-child(1) { animation-delay: 0.05s; }
+  .date-section:nth-child(2) { animation-delay: 0.15s; }
+  .date-section:nth-child(3) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .date-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .date-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .date-label.today { color: var(--accent); }
+
+  .date-full {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .date-count {
+    margin-left: auto;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── MATCH GRID ── */
+  .matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .match-card {
+    background: var(--card-bg);
+    padding: 1.1rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .match-card::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .match-card:hover { background: var(--card-hover); }
+  .match-card:hover::after { opacity: 1; }
+
+  .match-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .match-time {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .match-time .hs { font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-left: 0.1em; }
+  .match-time.no-hora { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); align-self: center; }
+
+  .match-competition {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    text-align: right;
+    line-height: 1.3;
+    max-width: 55%;
+  }
+
+  .match-teams {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .match-teams .vs {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0.2em;
+    vertical-align: middle;
+    letter-spacing: 0;
+  }
+
+  .match-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+  }
+
+  .match-venue {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.3;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.3rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .match-venue svg { flex-shrink: 0; margin-top: 1px; opacity: 0.5; }
+  .match-venue-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .match-channels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .channel-badge {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .ch-espn    { color: #ff7043; border-color: #5a1a05; background: #160603; }
+  .ch-disney  { color: #64b5f6; border-color: #0d3060; background: #040c18; }
+  .ch-tyc     { color: #aed581; border-color: #2e5010; background: #080f02; }
+  .ch-star    { color: #f48fb1; border-color: #60102a; background: #180408; }
+  .ch-dazn    { color: #ce93d8; border-color: #4a1060; background: #100418; }
+  .ch-fox     { color: #ffcc80; border-color: #604010; background: #180f02; }
+  .ch-default { color: var(--muted-light); border-color: #2a2a2a; background: #111; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 1.5rem 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .footer-note { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-eyebrow">Agenda Deportiva</div>
+    <h1>Próximos<br>Eventos</h1>
+  </div>
+  <div class="header-meta">
+    <div class="meta-stat"><span>{{ total_eventos }}</span>eventos</div>
+    <div class="meta-stat"><span>{{ resultados|length }}</span>deportes</div>
+    <div class="generado-tag">Actualizado {{ generado_en }} ART</div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    {% for res in resultados %}
+      {% for grupo in res.grupos %}
+        {% for ev in grupo.eventos %}
+        <span class="ticker-item">
+          {% if ev.hora %}<span class="t-hora">{{ ev.hora }}hs</span>{% endif %}
+          <span class="t-teams">{{ ev.contrincantes }}</span>
+          <span class="t-comp">· {{ ev.competicion }}</span>
+        </span>
+        <span class="ticker-sep">◆</span>
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+    {# Duplicate for seamless loop — JS will clone the track #}
+  </div>
+</div>
+
+<nav class="sport-nav">
+  {% for res in resultados %}
+  <button class="sport-tab {% if loop.first %}active{% endif %}"
+          onclick="showSport({{ loop.index0 }}, this)">
+    {% if res.icono %}
+    <img src="/iespien/icons/{{ res.icono }}" alt="{{ res.nombre }}"
+         onerror="this.style.display='none'">
+    {% endif %}
+    {{ res.nombre }}
+    <span class="sport-count">{{ res.total }}</span>
+  </button>
+  {% endfor %}
+</nav>
+
+<main>
+  {% for res in resultados %}
+  <div class="sport-panel {% if loop.first %}active{% endif %}" id="panel-{{ loop.index0 }}">
+
+    {% if res.grupos %}
+      {% for grupo in res.grupos %}
+      <div class="date-section">
+        <div class="date-header">
+          <span class="date-label {% if grupo.label == 'Hoy' %}today{% endif %}">
+            {{ grupo.label }}
+          </span>
+          <span class="date-full">{{ grupo.fecha }}</span>
+          <span class="date-count">{{ grupo.eventos|length }} partido{% if grupo.eventos|length != 1 %}s{% endif %}</span>
+        </div>
+
+        <div class="matches-grid">
+          {% for ev in grupo.eventos %}
+          <div class="match-card">
+            <div class="match-top">
+              {% if ev.hora %}
+              <div class="match-time">{{ ev.hora }}<span class="hs">hs</span></div>
+              {% else %}
+              <div class="match-time no-hora">Hora a confirmar</div>
+              {% endif %}
+              <div class="match-competition">{{ ev.competicion }}</div>
+            </div>
+
+            {% set partes = ev.contrincantes.split(' vs. ') if ' vs. ' in ev.contrincantes else ev.contrincantes.split(' vs ') %}
+            <div class="match-teams">
+              {% if partes|length == 2 %}
+                {{ partes[0] }}<span class="vs">vs.</span>{{ partes[1] }}
+              {% else %}
+                {{ ev.contrincantes }}
+              {% endif %}
+            </div>
+
+            <div class="match-bottom">
+              {% set venue_parts = [] %}
+              {% if ev.escenario %}{% set _ = venue_parts.append(ev.escenario) %}{% endif %}
+              {% if ev.lugar %}{% set _ = venue_parts.append(ev.lugar) %}{% endif %}
+              {% if venue_parts %}
+              <div class="match-venue">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span class="match-venue-text">{{ venue_parts | join(', ') }}</span>
+              </div>
+              {% else %}<div></div>{% endif %}
+
+              {% if ev.canales %}
+              <div class="match-channels">
+                {% for ch in ev.canales %}
+                {% set ch_lower = ch | lower %}
+                {% if 'espn' in ch_lower %}
+                  <span class="channel-badge ch-espn">{{ ch }}</span>
+                {% elif 'disney' in ch_lower %}
+                  <span class="channel-badge ch-disney">{{ ch }}</span>
+                {% elif 'tyc' in ch_lower %}
+                  <span class="channel-badge ch-tyc">{{ ch }}</span>
+                {% elif 'star' in ch_lower %}
+                  <span class="channel-badge ch-star">{{ ch }}</span>
+                {% elif 'dazn' in ch_lower %}
+                  <span class="channel-badge ch-dazn">{{ ch }}</span>
+                {% elif 'fox' in ch_lower %}
+                  <span class="channel-badge ch-fox">{{ ch }}</span>
+                {% else %}
+                  <span class="channel-badge ch-default">{{ ch }}</span>
+                {% endif %}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+    {% else %}
+    <div class="empty-state">Sin eventos para este período</div>
+    {% endif %}
+
+  </div>
+  {% endfor %}
+</main>
+
+<footer>
+  <span class="footer-note">IESPIEN · Horarios en ART (UTC−3) · Datos via Oracle + Google Search</span>
+  <span class="footer-note">Generado el {{ generado_en }}</span>
+</footer>
+
+<script>
+  // Duplicar el ticker para loop seamless
+  const track = document.getElementById('ticker-track');
+  if (track) {
+    track.innerHTML += track.innerHTML;
+    // Ajustar duración según cantidad de items
+    const items = track.querySelectorAll('.ticker-item').length;
+    const duration = Math.max(30, items * 2);
+    track.style.animationDuration = duration + 's';
+  }
+
+  function showSport(index, tab) {
+    document.querySelectorAll('.sport-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sport-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + index).classList.add('active');
+    tab.classList.add('active');
+  }
+</script>
+</body>
+</html>
